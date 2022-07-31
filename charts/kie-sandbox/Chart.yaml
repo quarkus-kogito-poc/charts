@@ -1,0 +1,8 @@
+apiVersion: v2
+appVersion: v
+description: A Helm chart for customising the deployment of the Kie Sandbox
+name: kie-sandbox
+version: 0.0.1
+home: https://github.com/redhat-cop/helm-charts
+maintainers:
+- name: gsampaio-rh

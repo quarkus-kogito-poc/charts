@@ -1,0 +1,26 @@
+{{- if .Values.enabled }}
+{{- if .Values.kie_sandbox }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: kie-sandbox
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: kie-sandbox
+    app.kubernetes.io/component: kie-sandbox
+    app.kubernetes.io/instance: kie-sandbox
+    app.kubernetes.io/name: kie-sandbox
+    app.kubernetes.io/part-of: kie-sandbox-app
+    app.openshift.io/runtime-version: {{ .Values.kie_sandbox.version }}
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: kie-sandbox
+    deploymentconfig: kie-sandbox
+{{- end }}
+{{- end }}

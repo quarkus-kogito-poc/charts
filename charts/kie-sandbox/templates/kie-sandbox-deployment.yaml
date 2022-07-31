@@ -1,0 +1,38 @@
+{{- if .Values.enabled }}
+{{- if .Values.kie_sandbox }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kie-sandbox
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: kie-sandbox
+    app.kubernetes.io/component: kie-sandbox
+    app.kubernetes.io/instance: kie-sandbox
+    app.kubernetes.io/name: kie-sandbox
+    app.kubernetes.io/part-of: kie-sandbox-app
+    app.openshift.io/runtime-namespace: {{ .Values.kie_sandbox_namespace }}
+spec:
+  replicas: {{ .Values.kie_sandbox.replicas }}
+  selector:
+    app: kie-sandbox
+  template:
+    metadata:
+      labels:
+        name: kie-sandbox
+    spec:
+      containers:
+      - name: kie-sandbox
+        image: quay.io/kogito_tooling_bot/kie-sandbox-image:{{ .Values.kie_sandbox.version }}
+        env:
+        - name: KIE_SANDBOX_EXTENDED_SERVICES_URL
+          value: 'http://kie-sandbox-extended-services:21345'
+        - name: CORS_PROXY_URL
+          value: 'http://cors-proxy:8080' 
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+{{- end }}
+{{- end }}

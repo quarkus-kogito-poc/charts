@@ -1,0 +1,26 @@
+{{- if .Values.enabled }}
+{{- if .Values.kie_sandbox }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: cors-proxy
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: cors-proxy
+    app.kubernetes.io/component: cors-proxy
+    app.kubernetes.io/instance: cors-proxy
+    app.kubernetes.io/name: cors-proxy
+    app.kubernetes.io/part-of: cors-proxy-app
+    app.openshift.io/runtime-version: {{ .Values.kie_sandbox.version }}
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: cors-proxy
+    deploymentconfig: cors-proxy
+{{- end }}
+{{- end }}

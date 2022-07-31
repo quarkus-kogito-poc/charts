@@ -1,0 +1,51 @@
+{{- if .Values.enabled }}
+{{- if .Values.kie_sandbox_extended_services }}
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kie-sandbox-extended-services
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: kie-sandbox-extended-services
+    app.kubernetes.io/component: kie-sandbox-extended-services
+    app.kubernetes.io/instance: kie-sandbox-extended-services
+    app.kubernetes.io/name: kie-sandbox-extended-services
+    app.kubernetes.io/part-of: kie-sandbox-extended-services-app
+    app.openshift.io/runtime: golang
+    app.openshift.io/runtime-namespace: {{ .Values.kie_sandbox_namespace }}
+spec:
+  replicas: {{ .Values.kie_sandbox_extended_services.replicas }}
+  selector:
+    matchLabels:
+      app: kie-sandbox-extended-services
+  template:
+    metadata:
+      labels:
+        app: kie-sandbox-extended-services
+        deploymentconfig: kie-sandbox-extended-services
+    spec:
+      containers:
+        - name: kie-sandbox-extended-services
+          image: quay.io/kogito_tooling_bot/kie-sandbox-extended-services-image:{{ .Values.kie_sandbox.version }}
+          ports:
+            - containerPort: 21345
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+{{- end }}
+{{- end }}

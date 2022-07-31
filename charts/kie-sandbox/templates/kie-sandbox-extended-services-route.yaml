@@ -1,0 +1,27 @@
+{{- if .Values.enabled }}
+{{- if .Values.kie_sandbox_extended_services.route }}
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: kie-sandbox-extended-services
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: kie-sandbox-extended-services
+    app.kubernetes.io/component: kie-sandbox-extended-services
+    app.kubernetes.io/instance: kie-sandbox-extended-services
+    app.kubernetes.io/name: kie-sandbox-extended-services
+    app.kubernetes.io/part-of: kie-sandbox-extended-services-app
+    app.openshift.io/runtime-version: {{ .Values.kie_sandbox.version }}
+spec:
+  to:
+    kind: Service
+    name: kie-sandbox-extended-services
+    weight: 100
+  port:
+    targetPort: 21345-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None
+{{- end }}
+{{- end }}

@@ -1,0 +1,27 @@
+{{- if .Values.enabled }}
+{{- if .Values.kie_sandbox.route }}
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: kie-sandbox
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: kie-sandbox
+    app.kubernetes.io/component: kie-sandbox
+    app.kubernetes.io/instance: kie-sandbox
+    app.kubernetes.io/name: kie-sandbox
+    app.kubernetes.io/part-of: kie-sandbox-app
+    app.openshift.io/runtime-version: {{ .Values.kie_sandbox.version }}
+spec:
+  to:
+    kind: Service
+    name: kie-sandbox
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None
+{{- end }}
+{{- end }}

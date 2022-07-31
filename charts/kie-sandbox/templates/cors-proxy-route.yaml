@@ -1,0 +1,27 @@
+{{- if .Values.enabled }}
+{{- if .Values.cors_proxy.route }}
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: cors_proxy
+  namespace: {{ .Values.kie_sandbox_namespace }}
+  labels:
+    app: cors_proxy
+    app.kubernetes.io/component: cors_proxy
+    app.kubernetes.io/instance: cors_proxy
+    app.kubernetes.io/name: cors_proxy
+    app.kubernetes.io/part-of: cors_proxy-app
+    app.openshift.io/runtime-version: {{ .Values.kie_sandbox.version }}
+spec:
+  to:
+    kind: Service
+    name: cors_proxy
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None
+{{- end }}
+{{- end }}
