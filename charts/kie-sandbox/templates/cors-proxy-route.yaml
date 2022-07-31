@@ -3,19 +3,19 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: cors_proxy
+  name: cors-proxy
   namespace: {{ .Values.kie_sandbox_namespace }}
   labels:
-    app: cors_proxy
-    app.kubernetes.io/component: cors_proxy
-    app.kubernetes.io/instance: cors_proxy
-    app.kubernetes.io/name: cors_proxy
-    app.kubernetes.io/part-of: cors_proxy-app
+    app: cors-proxy
+    app.kubernetes.io/component: cors-proxy
+    app.kubernetes.io/instance: cors-proxy
+    app.kubernetes.io/name: cors-proxy
+    app.kubernetes.io/part-of: cors-proxy-app
     app.openshift.io/runtime-version: {{ .Values.kie_sandbox.version }}
 spec:
   to:
     kind: Service
-    name: cors_proxy
+    name: cors-proxy
     weight: 100
   port:
     targetPort: 8080-tcp

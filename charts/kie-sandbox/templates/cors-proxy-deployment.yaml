@@ -1,8 +1,8 @@
 {{- if .Values.enabled }}
 {{- if .Values.cors_proxy }}
 ---
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: cors-proxy
   namespace: {{ .Values.kie_sandbox_namespace }}
@@ -12,22 +12,40 @@ metadata:
     app.kubernetes.io/instance: cors-proxy
     app.kubernetes.io/name: cors-proxy
     app.kubernetes.io/part-of: cors-proxy-app
+    app.openshift.io/runtime: nodejs
     app.openshift.io/runtime-namespace: {{ .Values.kie_sandbox_namespace }}
 spec:
   replicas: {{ .Values.cors_proxy.replicas }}
   selector:
-    app: cors-proxy
+    matchLabels:
+      app: cors-proxy
   template:
     metadata:
       labels:
-        name: cors-proxy
+        app: cors-proxy
+        deploymentconfig: cors-proxy
     spec:
       containers:
-      - name: cors-proxy
-        image: quay.io/kogito_tooling_bot/cors-proxy-image:{{ .Values.kie_sandbox.version }}
-        ports:
-        - name: http
-          containerPort: 8080
-          protocol: TCP
+        - name: cors-proxy
+          image: quay.io/kogito_tooling_bot/cors-proxy-image:{{ .Values.kie_sandbox.version }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
 {{- end }}
 {{- end }}

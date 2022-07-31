@@ -1,8 +1,8 @@
 {{- if .Values.enabled }}
 {{- if .Values.kie_sandbox }}
 ---
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: kie-sandbox
   namespace: {{ .Values.kie_sandbox_namespace }}
@@ -12,27 +12,45 @@ metadata:
     app.kubernetes.io/instance: kie-sandbox
     app.kubernetes.io/name: kie-sandbox
     app.kubernetes.io/part-of: kie-sandbox-app
+    app.openshift.io/runtime: js
     app.openshift.io/runtime-namespace: {{ .Values.kie_sandbox_namespace }}
 spec:
   replicas: {{ .Values.kie_sandbox.replicas }}
   selector:
-    app: kie-sandbox
+    matchLabels:
+      app: kie-sandbox
   template:
     metadata:
       labels:
-        name: kie-sandbox
+        app: kie-sandbox
+        deploymentconfig: kie-sandbox
     spec:
       containers:
-      - name: kie-sandbox
-        image: quay.io/kogito_tooling_bot/kie-sandbox-image:{{ .Values.kie_sandbox.version }}
-        env:
-        - name: KIE_SANDBOX_EXTENDED_SERVICES_URL
-          value: 'http://kie-sandbox-extended-services:21345'
-        - name: CORS_PROXY_URL
-          value: 'http://cors-proxy:8080' 
-        ports:
-        - name: http
-          containerPort: 8080
-          protocol: TCP
+        - name: kie-sandbox
+          image: quay.io/kogito_tooling_bot/kie-sandbox-image:{{ .Values.kie_sandbox.version }}
+          env:
+            - name: KIE_SANDBOX_EXTENDED_SERVICES_URL
+              value: 'http://kie-sandbox-extended-services:21345'
+            - name: CORS_PROXY_URL
+              value: 'http://cors-proxy:8080' 
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
 {{- end }}
 {{- end }}
