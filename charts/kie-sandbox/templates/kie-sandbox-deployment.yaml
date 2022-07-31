@@ -27,12 +27,12 @@ spec:
     spec:
       containers:
         - name: kie-sandbox
-          image: quay.io/kogito_tooling_bot/kie-sandbox-image:{{ .Values.kie_sandbox.version }}
+          image: quay.io/{{ .Values.kie_sandbox.org }}/kie-sandbox-image:{{ .Values.kie_sandbox.version }}
           env:
             - name: KIE_SANDBOX_EXTENDED_SERVICES_URL
-              value: 'http://kie-sandbox-extended-services:21345'
+              value: 'https://kie-sandbox-extended-services-kie-sandbox-namespace.apps.cluster-vjnz8.vjnz8.sandbox882.opentlc.com'
             - name: CORS_PROXY_URL
-              value: 'http://cors-proxy:8080' 
+              value: 'https://cors-proxy-kie-sandbox-namespace.apps.cluster-vjnz8.vjnz8.sandbox882.opentlc.com' 
           ports:
             - containerPort: 8080
               protocol: TCP

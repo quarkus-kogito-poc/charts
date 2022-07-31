@@ -4,6 +4,8 @@ kie_sandbox_namespace: kie-sandbox-namespace
 
 kie_sandbox:
   version: 0.16.0
+  # org: kie-tools
+  org: kogito_tooling_bot
   replicas: 1
   route: true
 

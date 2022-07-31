@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: cors-proxy
-          image: quay.io/kogito_tooling_bot/cors-proxy-image:{{ .Values.kie_sandbox.version }}
+          image: quay.io/{{ .Values.kie_sandbox.org }}/cors-proxy-image:{{ .Values.kie_sandbox.version }}
           ports:
             - containerPort: 8080
               protocol: TCP

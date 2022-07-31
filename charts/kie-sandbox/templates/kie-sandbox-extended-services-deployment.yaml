@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: kie-sandbox-extended-services
-          image: quay.io/kogito_tooling_bot/kie-sandbox-extended-services-image:{{ .Values.kie_sandbox.version }}
+          image: quay.io/{{ .Values.kie_sandbox.org }}/kie-sandbox-extended-services-image:{{ .Values.kie_sandbox.version }}
           ports:
             - containerPort: 21345
               protocol: TCP
