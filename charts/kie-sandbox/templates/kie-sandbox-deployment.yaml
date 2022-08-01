@@ -30,9 +30,9 @@ spec:
           image: quay.io/{{ .Values.kie_sandbox.org }}/kie-sandbox-image:{{ .Values.kie_sandbox.version }}
           env:
             - name: KIE_SANDBOX_EXTENDED_SERVICES_URL
-              value: 'https://kie-sandbox-extended-services-kie-sandbox-namespace.apps.cluster-vjnz8.vjnz8.sandbox882.opentlc.com'
+              value: 'http://localhost:21345'
             - name: CORS_PROXY_URL
-              value: 'https://cors-proxy-kie-sandbox-namespace.apps.cluster-vjnz8.vjnz8.sandbox882.opentlc.com' 
+              value: 'https://cors-proxy-kie-tools-namespace.apps.cluster-vjnz8.vjnz8.sandbox882.opentlc.com' 
           ports:
             - containerPort: 8080
               protocol: TCP

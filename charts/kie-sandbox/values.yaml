@@ -1,11 +1,12 @@
 ---
 enabled: true
-kie_sandbox_namespace: kie-sandbox-namespace
+kie_sandbox_namespace: kie-tools-namespace
 
 kie_sandbox:
-  version: 0.16.0
-  # org: kie-tools
-  org: kogito_tooling_bot
+  # version: 0.16.0
+  # org: kogito_tooling_bot
+  version: 0.21.0
+  org: kie-tools
   replicas: 1
   route: true
 
@@ -13,6 +14,5 @@ cors_proxy:
   replicas: 1
   route: true
 
-kie_sandbox_extended_services:
-  replicas: 1
-  route: true
+# kie_sandbox_extended_services:
+#   replicas: 1
